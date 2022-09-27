@@ -1,0 +1,112 @@
+@extends('layouts.admin')
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        Edit Press Release
+    </div>
+
+    <div class="card-body">
+        <form action="{{ route("admin.press.update",[$press]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+                <label for="title">Headline*</label>
+                <input type="text" id="headline" name="headline" class="form-control" required value="{{ old('headline', isset($press) ? $press->headline : '') }}">
+                @if($errors->has('title'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('title') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('global.product.fields.name_helper') }}
+                </p>
+            </div>
+            <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
+                <label for="description">Description*</label>
+                <textarea type="text" rows="1" id="description" name="description" class="form-control" required >{{ old('description',$press->description) }}</textarea>
+                @if($errors->has('description'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('description') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('global.product.fields.name_helper') }}
+                </p>
+            </div>
+            <div class="form-group {{ $errors->has('picture') ? 'has-error' : '' }}">
+                <label for="picture">Pictures</label>
+                <input type="file" rows="2" id="picture" name="picture[]" class="form-control" value="{{ old('picture', isset($press) ? $press->picture : '') }}" multiple>
+                @if($errors->has('description'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('picture') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('global.product.fields.name_helper') }}
+                </p>
+            </div>
+            {{--<div class="form-group {{ $errors->has('news_link') ? 'has-error' : '' }}">--}}
+                {{--<label for="video_link"> Youtube link</label>--}}
+                {{--<input type="url" rows="2" id="video_link" name="video_link" class="form-control"  value="{{ old('video_link', isset($blog) ? $blog->video_link : '') }}">--}}
+                {{--@if($errors->has('news_link'))--}}
+                    {{--<em class="invalid-feedback">--}}
+                        {{--{{ $errors->first('news_link') }}--}}
+                    {{--</em>--}}
+                {{--@endif--}}
+                {{--<p class="helper-block">--}}
+                    {{--{{ trans('global.product.fields.name_helper') }}--}}
+                {{--</p>--}}
+            {{--</div>--}}
+            {{--<div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">--}}
+                {{--<label for="description">Written by</label>--}}
+                {{--<input type="text" rows="1" id="written_by" name="written_by" class="form-control" required value="{{ old('written_by', isset($blog) ? $blog->written_by : '') }}"></input>--}}
+                {{--@if($errors->has('written_by'))--}}
+                    {{--<em class="invalid-feedback">--}}
+                        {{--{{ $errors->first('written_by') }}--}}
+                    {{--</em>--}}
+                {{--@endif--}}
+                {{--<p class="helper-block">--}}
+                    {{--{{ trans('global.product.fields.name_helper') }}--}}
+                {{--</p>--}}
+            {{--</div>--}}
+            <div class="form-group {{ $errors->has('date') ? 'has-error' : '' }}">
+                <label for="title">Date*</label>
+                <input type="date" id="date" name="date" class="form-control" required value="{{ old('date', date('Y-m-d', strtotime($press->date))) }}">
+                @if($errors->has('date'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('date') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('global.product.fields.name_helper') }}
+                </p>
+            </div>
+            <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
+                <label for="status">Active Status*</label>
+
+                <select name="status" id="status" class="form-control select2">
+                    @foreach($status as $active_status)
+                        <option value="{{$active_status->id}}" >
+                            {{$active_status->name}}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('course_category_id'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('status') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('global.role.fields.permissions_helper') }}
+                </p>
+            </div>
+
+
+            <div>
+                <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">
+            </div>
+        </form>
+    </div>
+</div>
+
+@endsection
